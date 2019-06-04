@@ -21,26 +21,35 @@ namespace Snake_Hendrik_Metsallik
     public partial class MainWindow : Window
     {
         const double CellSize = 30D;
-        const int CellCount = 32;
+        const int CellCount = 16;
 
         public MainWindow()
         {
             InitializeComponent();
-            DrawBoardBackground();            
+            DrawBoardBackground();
+            InitSnake();
+        }
+        private void InitSnake()
+        {
+            snake.Height = CellSize;
+            snake.Width = CellSize;
+            double coord = CellCount * CellSize / 2;
+            Canvas.SetTop(snake, coord);
+            Canvas.SetLeft(snake, coord); 
         }
         private void DrawBoardBackground()
         {
             SolidColorBrush color1 = Brushes.LightGreen;
             SolidColorBrush color2 = Brushes.LimeGreen;
 
-            for (int row = 0; row < CellCount / 2; row++)
+            for (int row = 0; row < CellCount; row++)
             {
                 SolidColorBrush color = row % 2 == 0 ? color1 : color2;
                 if (row % 2 == 0)
                 {
 
                 }
-                for (int col = 0; col < CellCount / 2; col++)
+                for (int col = 0; col < CellCount; col++)
                 {
                     Rectangle r = new Rectangle();
                     r.Width = CellSize;
@@ -60,31 +69,30 @@ namespace Snake_Hendrik_Metsallik
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            
-            /*if (e.Key == Key.D)
+            if (e.Key == Key.D)
             {
-                double currentLeft = Canvas.GetLeft(rectangle1);
-                double newLeft = currentLeft + 20;
-                Canvas.SetLeft(rectangle1, newLeft);
+                double currentLeft = Canvas.GetLeft(snake);
+                double newLeft = currentLeft + 30;
+                Canvas.SetLeft(snake, newLeft);
             }
             if (e.Key == Key.A)
             {
-                double currentLeft = Canvas.GetLeft(rectangle1);
-                double newLeft = currentLeft - 20;
-                Canvas.SetLeft(rectangle1, newLeft);
+                double currentLeft = Canvas.GetLeft(snake);
+                double newLeft = currentLeft - 30;
+                Canvas.SetLeft(snake, newLeft);
             }
             if (e.Key == Key.W)
             {
-                double currentLeft = Canvas.GetTop(rectangle1);
-                double newLeft = currentLeft - 20;
-                Canvas.SetTop(rectangle1, newLeft);
+                double currentLeft = Canvas.GetTop(snake);
+                double newLeft = currentLeft - 30;
+                Canvas.SetTop(snake, newLeft);
             }
             if (e.Key == Key.S)
             {
-                double currentLeft = Canvas.GetTop(rectangle1);
-                double newLeft = currentLeft + 20;
-                Canvas.SetTop(rectangle1, newLeft);
-            }*/
+                double currentLeft = Canvas.GetTop(snake);
+                double newLeft = currentLeft + 30;
+                Canvas.SetTop(snake, newLeft);
+            }
         }
     }
 }
