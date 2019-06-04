@@ -54,13 +54,13 @@ namespace Snake_Hendrik_Metsallik
             if (e.Key == Key.A)
             {
                 double currentLeft = Canvas.GetLeft(rectangle1);
-                double newLeft = currentLeft + 20;
+                double newLeft = currentLeft - 20;
                 Canvas.SetLeft(rectangle1, newLeft);
             }
             if (e.Key == Key.W)
             {
                 double currentLeft = Canvas.GetTop(rectangle1);
-                double newLeft = currentLeft + 20;
+                double newLeft = currentLeft - 20;
                 Canvas.SetTop(rectangle1, newLeft);
             }
             if (e.Key == Key.S)
