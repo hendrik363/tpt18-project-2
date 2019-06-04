@@ -37,6 +37,23 @@ namespace Snake_Hendrik_Metsallik
             Canvas.SetTop(snake, coord);
             Canvas.SetLeft(snake, coord); 
         }
+
+        private void MoveSnake(bool up, bool down, bool right, bool left)
+        {
+            if (up || down)
+            {
+                double currentTop = Canvas.GetTop(snake);
+                double newTop = up ? currentTop - CellSize : currentTop + CellSize;
+                Canvas.SetTop(snake, newTop);
+            }
+
+            if(left || right)
+            {
+                double currentLeft = Canvas.GetLeft(snake);
+                double newLeft = left ? currentLeft - CellSize : currentLeft + CellSize;
+                Canvas.SetLeft(snake, newLeft);
+            }
+        }
         private void DrawBoardBackground()
         {
             SolidColorBrush color1 = Brushes.LightGreen;
@@ -60,39 +77,19 @@ namespace Snake_Hendrik_Metsallik
                     board.Children.Add(r);
 
                     color = color == color1 ? color2 : color1;
-
-
-
                 }
 
             }
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.D)
-            {
-                double currentLeft = Canvas.GetLeft(snake);
-                double newLeft = currentLeft + 30;
-                Canvas.SetLeft(snake, newLeft);
-            }
-            if (e.Key == Key.A)
-            {
-                double currentLeft = Canvas.GetLeft(snake);
-                double newLeft = currentLeft - 30;
-                Canvas.SetLeft(snake, newLeft);
-            }
-            if (e.Key == Key.W)
-            {
-                double currentLeft = Canvas.GetTop(snake);
-                double newLeft = currentLeft - 30;
-                Canvas.SetTop(snake, newLeft);
-            }
-            if (e.Key == Key.S)
-            {
-                double currentLeft = Canvas.GetTop(snake);
-                double newLeft = currentLeft + 30;
-                Canvas.SetTop(snake, newLeft);
-            }
+            bool up = e.Key == Key.Up;
+            bool down = e.Key == Key.Down;
+            bool left = e.Key == Key.Left;
+            bool right = e.Key == Key.Right;
+
+            MoveSnake(up, down, left, right);
+
         }
     }
 }
