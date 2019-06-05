@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
-namespace Snake_Hendrik_Metsallik
+namespace SnakeGame
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -22,38 +23,30 @@ namespace Snake_Hendrik_Metsallik
     {
         const double CellSize = 30D;
         const int CellCount = 16;
+        DispatcherTimer timer;
+
+        Snake snake;
+        
 
         public MainWindow()
         {
             InitializeComponent();
             DrawBoardBackground();
-            InitSnake();
-        }
-        private void InitSnake()
-        {
-            snake.Height = CellSize;
-            snake.Width = CellSize;
-            double coord = CellCount * CellSize / 2;
-            Canvas.SetTop(snake, coord);
-            Canvas.SetLeft(snake, coord); 
+            snake = new Snake(snakeShape, CellSize, CellCount);
+            
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(0.5);
+            timer.Tick += Timer_Tick;
+            timer.Start();
         }
 
-        private void MoveSnake(bool up, bool down, bool right, bool left)
+        private void Timer_Tick(object sender, EventArgs e)
         {
-            if (up || down)
-            {
-                double currentTop = Canvas.GetTop(snake);
-                double newTop = up ? currentTop - CellSize : currentTop + CellSize;
-                Canvas.SetTop(snake, newTop);
-            }
-
-            if(left || right)
-            {
-                double currentLeft = Canvas.GetLeft(snake);
-                double newLeft = left ? currentLeft + CellSize : currentLeft - CellSize;
-                Canvas.SetLeft(snake, newLeft);
-            }
+            snake.Move();
         }
+        
+
         private void DrawBoardBackground()
         {
             SolidColorBrush color1 = Brushes.LightGreen;
@@ -83,13 +76,49 @@ namespace Snake_Hendrik_Metsallik
         }
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            bool up = e.Key == Key.Up;
-            bool down = e.Key == Key.Down;
-            bool left = e.Key == Key.Left;
-            bool right = e.Key == Key.Right;
-
-            MoveSnake(up, down, left, right);
-
+            Direction direction;
+            switch (e.Key)
+            {
+                case Key.Up:
+                    direction = Direction.Up;
+                    break;
+                case Key.Down:
+                    direction = Direction.Down;
+                    break;
+                case Key.Left:
+                    direction = Direction.Left;
+                    break;
+                case Key.Right:
+                    direction = Direction.Right;
+                    break;
+                default:
+                    return;
+            }
+            snake.ChangeDirection(direction);
+            /*if (e.Key == Key.Up)
+            {
+                direction = Direction.Up;
+            }
+            else if (e.Key == Key.Down)
+            {
+                direction = Direction.Down;
+            }
+            else if (e.Key == Key.Right)
+            {
+                direction = Direction.Right;
+            }
+            else if (e.Key == Key.Left)
+            {
+                direction = Direction.Left;
+            }
+            else
+            {
+                return;
+            }
+ 
+            MoveSnake(direction);*/
         }
+
+        
     }
 }
