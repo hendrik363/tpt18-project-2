@@ -50,7 +50,7 @@ namespace Snake_Hendrik_Metsallik
             if(left || right)
             {
                 double currentLeft = Canvas.GetLeft(snake);
-                double newLeft = left ? currentLeft - CellSize : currentLeft + CellSize;
+                double newLeft = left ? currentLeft + CellSize : currentLeft - CellSize;
                 Canvas.SetLeft(snake, newLeft);
             }
         }
