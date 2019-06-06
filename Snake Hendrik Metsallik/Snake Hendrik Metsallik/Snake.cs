@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
-namespace SnakeGame
+/*namespace SnakeGame
 {
     class Snake
     {
@@ -30,10 +30,7 @@ namespace SnakeGame
             direction = newDirection;
         }
 
-        public void Init(
-            Shape snakeShape,
-            double cellSize,
-            int cellCount)
+        public void Init()
         {
             snakeShape.Height = cellSize;
             snakeShape.Width = cellSize;
@@ -43,7 +40,30 @@ namespace SnakeGame
 
             ChangeDirection(Direction.Up);
         }
-
+        private bool Border(double x)
+        {
+            if (x > 479 || x < 0)
+            {
+                if (MessageBox.Show("Game Over!\n\nAgain?", "",
+                    MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    snakeShape.Height = cellSize;
+                    snakeShape.Width = cellSize;
+                    double coord = cellCount * cellSize / 2;
+                    Canvas.SetTop(snakeShape, coord);
+                    Canvas.SetTop(snakeShape, coord);
+                }
+                else
+                {
+                    ApplicationException.Current.Shutdown();
+                }
+                return false;
+                else
+                {
+                    return true
+                }
+            }
+        }
         public void Move()
         {
             if (direction == Direction.Up || direction == Direction.Down)
@@ -51,6 +71,8 @@ namespace SnakeGame
                 double currentTop = Canvas.GetTop(snakeShape);
                 double newTop = direction == Direction.Up ? currentTop - cellSize : currentTop + cellSize;
                 Canvas.SetTop(snakeShape, newTop);
+                if (Border(newTop) == true)
+                    Canvas.SetTop(snakeShape, newTop);
             }
 
             if (direction == Direction.Left || direction == Direction.Right)
@@ -58,8 +80,10 @@ namespace SnakeGame
                 double currentLeft = Canvas.GetLeft(snakeShape);
                 double newLeft = direction == Direction.Left ? currentLeft - cellSize : currentLeft + cellSize;
                 Canvas.SetLeft(snakeShape, newLeft);
+                if (Border(newLeft) == true)
+                    Canvas.SetLeft(snakeShape, newLeft);
             }
         }
 
     }
-}
+}*/

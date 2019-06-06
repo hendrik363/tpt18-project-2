@@ -23,29 +23,37 @@ namespace SnakeGame
     {
         const double CellSize = 30D;
         const int CellCount = 16;
-        DispatcherTimer timer;
 
-        Snake snake;
-        
+        DispatcherTimer timer;
+        Random rnd = new Random();
+
+        GameStatus gameStatus;
+        SnakeParts snakePart = new SnakeParts();
+
+        int foodRow;
+        int foodCol;
+
+        Direction snakeDirection;
+
+        int points = 0;
 
         public MainWindow()
         {
             InitializeComponent();
             DrawBoardBackground();
-            snake = new Snake(snakeShape, CellSize, CellCount);
-            
+            InitFood();
+            InitSnake();
+            ChangePoints(0);
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(0.5);
             timer.Tick += Timer_Tick;
             timer.Start();
-        }
 
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            snake.Move();
+            rnd = new Random();
+
+            ChangeGameStatus(GameStatus.Ongoing);
         }
-        
 
         private void DrawBoardBackground()
         {
@@ -55,10 +63,7 @@ namespace SnakeGame
             for (int row = 0; row < CellCount; row++)
             {
                 SolidColorBrush color = row % 2 == 0 ? color1 : color2;
-                if (row % 2 == 0)
-                {
 
-                }
                 for (int col = 0; col < CellCount; col++)
                 {
                     Rectangle r = new Rectangle();
@@ -74,8 +79,118 @@ namespace SnakeGame
 
             }
         }
+
+        private void ChangeGameStatus(GameStatus newGameStatus)
+        {
+            gameStatus = newGameStatus;
+            lblGameStatus.Content =
+                $"Status:{gameStatus}";
+        }
+
+        private void ChangePoints(int newPoints)
+        {
+            points = newPoints;
+            lblPoints.Content =
+                $"Points: {points}";
+        }
+
+        private void InitFood()
+        {
+            foodShape.Height = CellSize;
+            foodShape.Width = CellSize;
+            foodRow = rnd.Next(0, CellCount);
+            foodCol = rnd.Next(0, CellCount);
+            SetShape(foodShape, foodRow, foodCol);
+        }
+
+        private void InitSnake()
+        {
+            snakeShape.Height = CellSize;
+            snakeShape.Width = CellSize;
+            int index = CellCount / 2;
+            snakePart.Row = index;
+            snakePart.Col = index;
+            SetShape(snakeShape, snakePart.Row, snakePart.Col);
+
+            ChangeSnakeDirection(Direction.Up);
+        }
+
+        private void ChangeSnakeDirection(Direction direction)
+        {
+            snakeDirection = direction;
+            lblSnakeDirection.Content =
+                $"Direction: {direction}";
+        }
+
+        private void MoveSnake(Direction direction)
+        {
+
+            switch (snakeDirection)
+            {
+                case Direction.Up:
+                    snakePart.Row--;
+                    break;
+                case Direction.Left:
+                    snakePart.Col--;
+                    break;
+                case Direction.Down:
+                    snakePart.Row++;
+                    break;
+                case Direction.Right:
+                    snakePart.Col++;
+                    break;
+            }
+
+            bool food = 
+                snakePart.Row == foodRow &&
+                snakePart.Col == foodCol;
+            if(food)
+            {
+                ChangePoints(points + 1);
+                InitFood();
+            }
+
+            SetShape(snakeShape, snakePart.Row, snakePart.Col);           
+        }
+        private void SetShape(Shape shape, int row, int col)
+        {
+            double top = row * CellSize;
+            double left = col * CellSize;
+
+            Canvas.SetTop(shape, top);
+            Canvas.SetLeft(shape, left);
+        }
+
+        private void SnakeParts()
+        {
+            List<int> a = new List<int>();
+            a.Add(1);
+            a.Add(2);
+            a.Add(3);
+
+            int temp = a[2];
+            a.RemoveAt(2);
+            a.Insert(0, temp);
+
+            Console.WriteLine(String.Join(",", a));
+        }
+            
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if(gameStatus != GameStatus.Ongoing)
+            {
+                return;
+            }
+            MoveSnake(snakeDirection);
+        }                      
+        
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            if (gameStatus != GameStatus.Ongoing)
+            {
+                return;
+            }
+
             Direction direction;
             switch (e.Key)
             {
@@ -94,7 +209,7 @@ namespace SnakeGame
                 default:
                     return;
             }
-            snake.ChangeDirection(direction);
+            ChangeSnakeDirection(direction);
             /*if (e.Key == Key.Up)
             {
                 direction = Direction.Up;
