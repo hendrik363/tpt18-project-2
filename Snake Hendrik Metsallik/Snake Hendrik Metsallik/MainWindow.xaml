@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SnakeGame"
         mc:Ignorable="d"
-        Title="Snake Game" Height="480" Width="480" 
+        Title="Snake Game"
         ResizeMode="NoResize" Topmost="True"
         SizeToContent="WidthAndHeight"
         KeyDown="Window_KeyDown">
@@ -21,17 +21,12 @@
         </StackPanel>
         <Canvas
             Grid.Row="1"
-            Name="board"  Background="LightGreen"
+            Name="board"
                 Height="480" Width="480">
-            <Rectangle Name="snakeShape" 
-                       Fill="Brown"
-                       Panel.ZIndex="10"
-                       >
-            </Rectangle>
             <Ellipse
                 Name="foodShape"
                 Fill="Red"
-                Panel.ZIndex="5">
+                Panel.ZIndex="50">
             </Ellipse>
         </Canvas>
     </Grid>
